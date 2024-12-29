@@ -1,2 +1,3 @@
-# ScraperToTelegramBot
-A web scraper to who sends the results to a telegram bot
+# Appartments finder telegram Bot
+
+An appartment finder web scraper who automatically subscribe users from a telegram bot

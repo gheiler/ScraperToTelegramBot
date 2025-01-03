@@ -3,6 +3,7 @@ import {
   Generated,
   Insertable,
   JSONColumnType,
+  NullableInsertKeys,
   Selectable,
   Updateable,
 } from "kysely";
@@ -10,9 +11,9 @@ import {
 export interface Database {
   user: UserTable;
   apartment: Apartment;
-  userApartmentSearch: UserApartmentSearchTable;
-  userApartmentSubscription: UserApartmentSubscriptionTable;
-  userApartmentSearchResult: UserApartmentSearchResultTable;
+  user_apartment_search: UserApartmentSearchTable;
+  user_apartment_subscription: UserApartmentSubscriptionTable;
+  user_apartment_search_result: UserApartmentSearchResultTable;
 }
 
 interface WithDate {
@@ -45,11 +46,11 @@ export interface UserTable extends WithDate {
 
 type Address = JSONColumnType<{
   streetName: string;
-  streetNumber: string; // we don't validate only nunbers for better compatibility
-  additionalInfo: string | null;
-  postalCode: string; // we don't validate only nunbers for better compatibility
-  city: string;
-  country: string;
+  streetNumber: string | undefined; // we don't validate only nunbers for better compatibility
+  additionalInfo: string | undefined;
+  postalCode: string | undefined; // we don't validate only nunbers for better compatibility
+  city: string | undefined;
+  country: string | undefined;
 }>;
 
 // You should not use the table schema interfaces directly. Instead, you should
@@ -63,7 +64,7 @@ export type NewUser = Insertable<UserTable>;
 export type UserUpdate = Updateable<UserTable>;
 
 export interface ApartmentTable extends WithDate {
-  id: Generated<string>;
+  id: Generated<string> | undefined;
   description: string | null;
   url: string;
   provider: string;
@@ -72,6 +73,7 @@ export interface ApartmentTable extends WithDate {
   coldPrice: number | null;
   warmPrice: number | null;
   sizeInSqrMeters: number | null;
+  totalRooms: number | null;
 }
 
 export type Apartment = Selectable<ApartmentTable>;
@@ -95,7 +97,7 @@ export type UserApartmentSubscriptionUpdate =
   Updateable<UserApartmentSubscriptionTable>;
 
 export interface UserApartmentSearchTable extends WithDate {
-  id: Generated<string>;
+  id: NullableInsertKeys<Generated<string>>;
   userId: string;
   url: string;
   provider: string;
@@ -107,7 +109,7 @@ export type UserApartmentSearchUpdate = Updateable<UserApartmentSearchTable>;
 
 export interface UserApartmentSearchResultTable {
   id: Generated<string>;
-  userApartmentSearchId: string;
+  user_apartment_search_id: string;
   total: number;
   apartmentIds: JSONColumnType<[ApartmentTable]>;
   notified: boolean;

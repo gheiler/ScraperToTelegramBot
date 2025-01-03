@@ -37,6 +37,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("coldPrice", "integer")
     .addColumn("warmPrice", "integer")
     .addColumn("sizeInSqrMeters", "integer")
+    .addColumn("totalRooms", "integer")
     .addColumn("address", "jsonb")
     .addColumn("createdAt", "timestamp", (col) =>
       col.defaultTo(sql`now()`).notNull()
